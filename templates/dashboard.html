@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}SecureSys - Dashboard{% endblock %}
+
+{% block content %}
+
+<h1>Welcome back, <strong>{{ session.username }}</strong> 👋</h1>
+
+<div class="dashboard-card">
+    <p>You have successfully logged in using the Smart Login System.</p>
+    
+    <div class="info-box">
+        <h3>System Features Used:</h3>
+        <ul>
+            <li>✅ Password Hashing</li>
+            <li>✅ Anomaly Detection (Isolation Forest)</li>
+            <li>✅ Login History Tracking</li>
+            <li>✅ Suspicious Activity Detection</li>
+        </ul>
+    </div>
+
+    <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+</div>
+
+<!-- Show full login history on dashboard -->
+<div class="history">
+    <h2>📊 Your Login Activity</h2>
+    
+    {% if history and history|length > 0 %}
+    <table>
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Date & Time</th>
+            <th>Attempts</th>
+            <th>IP Address</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for log in history %}
+        <tr>
+            <td>{{ log.username }}</td>
+            <td>{{ log.time }}</td>
+            <td>{{ log.attempts }}</td>
+            <td><code>{{ log.ip or 'Unknown' }}</code></td>
+            <td>
+                <span class="status {{ log.status.lower() if log.status else 'unknown' }}">
+                    {{ log.status }}
+                </span>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+    {% else %}
+    <p class="no-data">No activity recorded yet.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

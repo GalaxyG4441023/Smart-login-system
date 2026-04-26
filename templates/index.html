@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureSys - Smart Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>🔐 SecureSys</h2>
+        <p>AI-Powered Login System</p>
+        
+        <div class="nav-links">
+            <a href="{{ url_for('login') }}" class="active">🔑 Login</a>
+            <a href="{{ url_for('register') }}">📝 Register</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+
+        <h1>Smart Login System</h1>
+
+        <div class="login-card">
+
+            <h3>Login to your account</h3>
+
+            <!-- Login Form -->
+            <form method="POST" id="loginForm">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" name="username" placeholder="Enter username" required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" name="password" id="password" placeholder="Enter password" required>
+                        <span class="toggle-password" onclick="togglePassword()">👁</span>
+                    </div>
+                </div>
+
+                <input type="hidden" name="attempts" id="attempts" value="1">
+
+                <button type="submit" class="btn-login">Login</button>
+            </form>
+
+            <!-- Message -->
+            {% if message %}
+            <p class="message {{ 'success' if 'Successful' in message else 'error' if 'Invalid' in message or 'Error' in message else 'warning' }}">
+                {{ message }}
+            </p>
+            {% endif %}
+
+            <!-- OTP Section (Shows only when suspicious) -->
+            {% if show_otp %}
+            <div class="otp-box">
+                <h4>⚠️ Suspicious Activity Detected</h4>
+                <p>A One-Time Password (OTP) has been sent to your registered mobile number.</p>
+                
+                <div class="form-group">
+                    <label>Enter OTP</label>
+                    <input type="text" name="otp" id="otp" placeholder="6-digit OTP" maxlength="6">
+                </div>
+                
+                <div class="otp-buttons">
+                    <button type="button" class="btn-verify" onclick="verifyOTP()">Verify OTP</button>
+                    <button type="button" class="btn-resend">Resend OTP</button>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="forgot-password">
+                <a href="#">Forgot Password?</a>
+            </div>
+
+        </div>
+
+        <!-- Login History -->
+        <div class="history">
+            <h2>📊 Recent Login Activity</h2>
+            
+            {% if history %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Date & Time</th>
+                        <th>Attempts</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in history %}
+                    <tr>
+                        <td>{{ log.username }}</td>
+                        <td>{{ log.time }}</td>
+                        <td>{{ log.attempts }}</td>
+                        <td>
+                            <span class="status {{ log.status.lower() }}">
+                                {{ log.status }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="no-data">No login attempts yet.</p>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

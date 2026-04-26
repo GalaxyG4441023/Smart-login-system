@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}SecureSys - Register{% endblock %}
+
+{% block content %}
+
+<h1>Create New Account</h1>
+
+<div class="login-card">
+
+    <h3>Register</h3>
+
+    <form method="POST" action="{{ url_for('register') }}">
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Choose a username" required>
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <div class="password-wrapper">
+                <input type="password" name="password" id="password" placeholder="Create password" required>
+                <span class="toggle-password" onclick="togglePassword()">👁</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Confirm Password</label>
+            <div class="password-wrapper">
+                <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm password" required>
+                <span class="toggle-password" onclick="togglePasswordConfirm()">👁</span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-login">Register</button>
+    </form>
+
+    {% if message %}
+    <p class="message {{ 'success' if 'successful' in message.lower() else 'error' }}">
+        {{ message }}
+    </p>
+    {% endif %}
+
+    <p class="switch-link">
+        Already have an account? <a href="{{ url_for('login') }}">Login here</a>
+    </p>
+
+</div>
+
+{% endblock %}

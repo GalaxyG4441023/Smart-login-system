@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SecureSys - Smart Login{% endblock %}</title>
+    
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>🔐 SecureSys</h2>
+        <p>AI-Powered Login System</p>
+        
+        <div class="nav-links">
+            {% if session and session.username %}
+                <a href="{{ url_for('dashboard') }}">🏠 Dashboard</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="active">🔑 Login</a>
+                <a href="{{ url_for('register') }}">📝 Register</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+
+</div>
+
+<!-- JavaScript -->
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
